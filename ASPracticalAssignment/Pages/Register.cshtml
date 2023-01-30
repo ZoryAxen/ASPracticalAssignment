@@ -3,3 +3,104 @@
 @{
     ViewData["title"] = "Register";
 }
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <h1>Membership Registration</h1>
+            <form method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                @*Username*@
+                <div>
+                    <label class="form-label" asp-for="RModel.Username">@Html.DisplayNameFor(m => m.RModel.Username)</label>
+                    <input type="text" asp-for="RModel.Username" class="form-control" />
+                    <span asp-validation-for="RModel.Username" class="text-danger"></span>
+                </div>
+
+                @*First Name*@
+                <div>
+                    <label class="form-label" asp-for="RModel.FirstName">@Html.DisplayNameFor(m => m.RModel.FirstName)</label>
+                    <input type="text" asp-for="RModel.FirstName" class="form-control" />
+                    <span asp-validation-for="RModel.FirstName" class="text-danger"></span>
+                </div>
+
+                @*Last Name*@
+                <div>
+                    <label class="form-label" asp-for="RModel.LastName">@Html.DisplayNameFor(m => m.RModel.LastName)</label>
+                    <input type="text" asp-for="RModel.LastName" class="form-control" />
+                    <span asp-validation-for="RModel.LastName" class="text-danger"></span>
+                </div>
+
+                @*Gender*@
+                <div>
+                    <label class="col-sm-2 col-form-label" asp-for="RModel.Gender"></label>
+                    <div class="col-sm-10 d-flex align-items-center">
+                        <div class="form-check form-check-inline">
+                            @Html.RadioButtonFor(m => m.RModel.Gender, "M", new {@class = "form-check-input"})
+                            <label class="form-check-label">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            @Html.RadioButtonFor(m => m.RModel.Gender, "F", new {@class = "form-check-input"})
+                            <label class="form-check-label">Female</label>
+                        </div>
+                        <span asp-validation-for="RModel.Gender" class="text-danger"></span>
+                    </div>
+                </div>
+
+                @*NRIC*@
+                <div>
+                    <label class="form-label" asp-for="RModel.NRIC">@Html.DisplayNameFor(m => m.RModel.NRIC)</label>
+                    <input type="text" asp-for="RModel.NRIC" class="form-control" />
+                    <span asp-validation-for="RModel.NRIC" class="text-danger"></span>
+                </div>
+
+                @*Email Address*@
+                <div>
+                    <label class="form-label" asp-for="RModel.Email">@Html.DisplayNameFor(m => m.RModel.Email)</label>
+                    <input type="text" asp-for="RModel.Email" class="form-control" />
+                    <span asp-validation-for="RModel.Email" class="text-danger"></span>
+                </div>
+
+                @*Password*@
+                <div>
+                    <label class="form-label" asp-for="RModel.Password">@Html.DisplayNameFor(m => m.RModel.Password)</label>
+                    <input type="text" asp-for="RModel.Password" class="form-control" />
+                    <span asp-validation-for="RModel.Password" class="text-danger"></span>
+                </div>
+
+                @*Confirm Password*@
+                <div>
+                    <label class="form-label" asp-for="RModel.ConfirmPassword">@Html.DisplayNameFor(m => m.RModel.ConfirmPassword)</label>
+                    <input type="text" asp-for="RModel.ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="RModel.Password" class="text-danger"></span>
+                </div>
+
+                @*Date of Birth*@
+                <div>
+                    <label class="form-label" asp-for="RModel.DateOfBirth">@Html.DisplayNameFor(m => m.RModel.DateOfBirth)</label>
+                    <input type="date" asp-for="RModel.DateOfBirth" class="form-control" />
+                    <span asp-validation-for="RModel.DateOfBirth" class="text-danger"></span>
+                </div>
+
+                @*Resume Upload*@
+                <div>
+                    <label class="form-label" asp-for="Resume"></label>
+                    <input type="file" asp-for="Resume" accept=".pdf,.docx" />
+                    <span asp-validation-for="Resume" class="text-danger"></span>
+                </div>
+
+                @*WhoAmI*@
+                <div>
+                    <label class="form-label" asp-for="RModel.WhoamI ">@Html.DisplayNameFor(m => m.RModel.WhoamI)</label>
+                    <input type="text" asp-for="RModel.WhoamI" class="form-control" />
+                    <span asp-validation-for="RModel.WhoamI" class="text-danger"></span>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>

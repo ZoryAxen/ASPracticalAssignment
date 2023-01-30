@@ -1,7 +1,55 @@
 ﻿@page
 @model ASPracticalAssignment.Pages.LoginModel
 @{
-    ViewData["title"] = "Login Form";
+    ViewData["title"] = "Login";
 }
+
+<section class="p-4 d-flex justify-content-center align-items-center">
+    <div class="bg-white border rounded-3 col-5 col-xs-10">
+        <div class="d-flex justify-content-center text-black p-4">
+            <form class="col-10" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <!-- Username input -->
+                <div class="form-outline mb-4">
+                    <label class="form-label" asp-for="LModel.Email">Email Address</label>
+                    <input type="email" asp-for="LModel.Email" class="form-control" />
+                    <span asp-validation-for="LModel.Email" class="text-danger"></span>
+                </div>
+
+                <!-- Password input -->
+                <div class="form-outline mb-4">
+                    <label class="form-label" asp-for="LModel.Password">Password</label>
+                    <input type="password" asp-for="LModel.Password" class="form-control" />
+                    <span asp-validation-for="LModel.Password" class="text-danger"></span>
+                </div>
+
+                <!-- 2 column grid layout for inline styling -->
+                <div class="row mb-4">
+                    <div class="col d-flex justify-content-center">
+                        <!-- Checkbox -->
+                        <div class="form-check">
+                            <input class="form-check-input" asp-for="LModel.RememberMe" type="checkbox" />
+                            <label class="form-check-label" asp-for="LModel.RememberMe"> Remember me </label>
+                        </div>
+                    </div>
+
+                    @*        <div class="col">
+                    <!-- Simple link -->
+                    <a href="#!">Forgot password?</a>
+                    </div>*@
+                </div>
+
+                <!-- Submit button -->
+                <button type="submit" class="btn w-100 btn-primary mb-4">Login</button>
+
+                <!-- Register buttons -->
+                <div class="text-center">
+                    <p>Not a member? <a asp-page="/Register">Register</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
 
 

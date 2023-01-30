@@ -11,8 +11,12 @@ html {
 html {
   position: relative;
   min-height: 100%;
+  color: #ffffff;
 }
 
 body {
   margin-bottom: 60px;
+  background-color: #000000;
+  min-height: 100%;
+  color: #fff;
 }

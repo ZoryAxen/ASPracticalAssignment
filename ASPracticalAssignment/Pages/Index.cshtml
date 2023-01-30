@@ -5,6 +5,18 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4 text-light">Welcome</h1>
+    <div class="d-flex bg-white text-black justify-content-center">
+        <div class="">
+            <p>Username: @Model.MyUser.Username</p>
+            <p>Email: @Model.MyUser.Email</p>
+            <p>First Name: @Model.MyUser.FirstName</p>
+            <p>Last Name: @Model.MyUser.LastName</p>
+            <p>NRIC: @Model.MyUser.NRIC</p>
+            <p>Gender: @Model.MyUser.Gender</p>
+            <p>WhoamI: @Model.MyUser.WhoamI</p>
+            <p>Date of Birth: @Model.MyUser.DateOfBirth</p>
+        </div>
+        
+    </div>
 </div>
