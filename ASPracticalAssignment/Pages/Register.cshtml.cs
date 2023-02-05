@@ -47,6 +47,7 @@ namespace ASPracticalAssignment.Pages
                     DateOfBirth = RModel.DateOfBirth,
                     WhoamI = protector.Protect(RModel.WhoamI)
                 };
+
                 if (Resume != null)
                 {
                     if (Resume.Length > 10 * 1024 * 1024)
@@ -64,10 +65,27 @@ namespace ASPracticalAssignment.Pages
                 }
                 try
                 {
+                    if (signInManager.IsSignedIn(User))
+                    {
+                        await signInManager.SignOutAsync();
+                        HttpContext.Session.Remove("LoggedIn");
+                        HttpContext.Session.Remove("AuthToken");
+
+                        Response.Cookies.Delete("AuthToken");
+                    }
                     var result = await userManager.CreateAsync(user, RModel.Password);
                     if (result.Succeeded)
                     {
                         await signInManager.SignInAsync(user, false);
+                        string guid = Guid.NewGuid().ToString();
+
+                        HttpContext.Session.SetString("LoggedIn", user.UserName);
+                        HttpContext.Session.SetString("AuthToken", guid);
+
+                        Response.Cookies.Append("AuthToken", guid, new CookieOptions
+                        {
+                            Expires = DateTime.Now.AddMinutes(30)
+                        });
                         return RedirectToPage("Index");
                     }
                     foreach (var error in result.Errors)

@@ -24,8 +24,18 @@ namespace ASPracticalAssignment.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            if(signInManager.IsSignedIn(User) && HttpContext.Session.GetString("LoggedIn") == "Success")
+            if(signInManager.IsSignedIn(User) && HttpContext.Session.GetString("LoggedIn") != null && HttpContext.Session.GetString("AuthToken") != null && Request.Cookies["AuthToken"] != null)
             {
+                if (!HttpContext.Session.GetString("AuthToken").ToString().Equals(Request.Cookies["AuthToken"]))
+                {
+                    await signInManager.SignOutAsync();
+
+                    HttpContext.Session.Remove("LoggedIn");
+                    HttpContext.Session.Remove("AuthToken");
+
+                    Response.Cookies.Delete("AuthToken");
+                    return RedirectToPage("Login");
+                }
                 var dataProtectionProvider = DataProtectionProvider.Create("EncryptData");
                 var protector = dataProtectionProvider.CreateProtector("MySecretKey");
                 var user = await userManager.GetUserAsync(User);

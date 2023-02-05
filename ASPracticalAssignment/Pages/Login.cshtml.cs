@@ -28,10 +28,25 @@ namespace ASPracticalAssignment.Pages
                 var user = await userManager.FindByEmailAsync(LModel.Email);
                 if (user != null)
                 {
+                    if (signInManager.IsSignedIn(User))
+                    {
+                        await signInManager.SignOutAsync();
+                        HttpContext.Session.Remove("LoggedIn");
+                        
+                    }
                     var identityResult = await signInManager.PasswordSignInAsync(user.UserName, LModel.Password, LModel.RememberMe, false);
                     if (identityResult.Succeeded)
                     {
-                        HttpContext.Session.SetString("LoggedIn", "Success");
+                        string guid = Guid.NewGuid().ToString();
+
+                        HttpContext.Session.SetString("LoggedIn", user.UserName);
+                        HttpContext.Session.SetString("AuthToken", guid);
+
+                        Response.Cookies.Append("AuthToken", guid, new CookieOptions
+                        {
+                            Expires = DateTime.Now.AddMinutes(30)
+                        });
+
                         return RedirectToPage("Index");
                     }
                     ModelState.AddModelError(string.Empty, "Email or password is incorrect");

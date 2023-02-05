@@ -16,8 +16,12 @@ namespace ASPracticalAssignment.Pages
         public async Task<IActionResult> OnPostLogoutAsync()
         {
             await signInManager.SignOutAsync();
-            HttpContext.Session.Clear();
+
             HttpContext.Session.Remove("LoggedIn");
+            HttpContext.Session.Remove("AuthToken");
+
+            Response.Cookies.Delete("AuthToken");
+
             return RedirectToPage("Login");
         }
         public async Task<IActionResult> OnPostDontLogoutAsync()
