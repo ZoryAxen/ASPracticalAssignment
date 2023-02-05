@@ -12,7 +12,7 @@ namespace ASPracticalAssignment.Pages
         public Login LModel { get; set; }
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly UserManager<ApplicationUser> userManager;
-        public LoginModel(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager) 
+        public LoginModel(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
             this.signInManager = signInManager;
             this.userManager = userManager;
@@ -21,36 +21,51 @@ namespace ASPracticalAssignment.Pages
         {
         }
 
-        public async Task<IActionResult> OnPostAsync() 
-        { 
-            if(ModelState.IsValid)
+        public async Task<IActionResult> OnPostAsync()
+        {
+            if (ModelState.IsValid)
             {
                 var user = await userManager.FindByEmailAsync(LModel.Email);
                 if (user != null)
                 {
-                    if (signInManager.IsSignedIn(User))
+                    if (!await userManager.IsLockedOutAsync(user))
                     {
-                        await signInManager.SignOutAsync();
-                        HttpContext.Session.Remove("LoggedIn");
-                        
-                    }
-                    var identityResult = await signInManager.PasswordSignInAsync(user.UserName, LModel.Password, LModel.RememberMe, false);
-                    if (identityResult.Succeeded)
-                    {
-                        string guid = Guid.NewGuid().ToString();
-
-                        HttpContext.Session.SetString("LoggedIn", user.UserName);
-                        HttpContext.Session.SetString("AuthToken", guid);
-
-                        Response.Cookies.Append("AuthToken", guid, new CookieOptions
+                        if (signInManager.IsSignedIn(User))
                         {
-                            Expires = DateTime.Now.AddMinutes(30)
-                        });
+                            await signInManager.SignOutAsync();
+                            HttpContext.Session.Remove("LoggedIn");
+                            HttpContext.Session.Remove("AuthToken");
+                        }
+                        var identityResult = await signInManager.PasswordSignInAsync(user.UserName, LModel.Password, LModel.RememberMe, false);
+                        if (identityResult.Succeeded)
+                        {
+                            string guid = Guid.NewGuid().ToString();
 
-                        return RedirectToPage("Index");
+                            HttpContext.Session.SetString("LoggedIn", user.UserName);
+                            HttpContext.Session.SetString("AuthToken", guid);
+
+                            Response.Cookies.Append("AuthToken", guid, new CookieOptions
+                            {
+                                Expires = DateTime.Now.AddMinutes(30)
+                            });
+
+                            await userManager.ResetAccessFailedCountAsync(user);
+
+                            return RedirectToPage("Index");
+                        }
+                        ModelState.AddModelError(string.Empty, "Email or password is incorrect");
+
+                        //Set lockout increment
+                        await userManager.AccessFailedAsync(user);
+                        if (await userManager.GetAccessFailedCountAsync(user) >= 3)
+                        {
+                            await userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MaxValue);
+                            return Page();
+                        }
+
                     }
-                    ModelState.AddModelError(string.Empty, "Email or password is incorrect");
-                }           
+                    ModelState.AddModelError(string.Empty, "Account has been locked out due to too many failed login attempts");                    
+                }
             }
             return Page();
         }
