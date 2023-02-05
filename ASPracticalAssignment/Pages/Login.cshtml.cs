@@ -57,14 +57,18 @@ namespace ASPracticalAssignment.Pages
 
                         //Set lockout increment
                         await userManager.AccessFailedAsync(user);
+
                         if (await userManager.GetAccessFailedCountAsync(user) >= 3)
                         {
-                            await userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MaxValue);
+                            await userManager.SetLockoutEndDateAsync(user, DateTime.Now.AddMinutes(10));
+                            ModelState.AddModelError(string.Empty, "Account has been locked out due to too many failed login attempts. Please try again after 10 minutes");
                             return Page();
                         }
-
-                    }
-                    ModelState.AddModelError(string.Empty, "Account has been locked out due to too many failed login attempts");                    
+                    }                     
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Account has been locked out due to too many failed login attempts");
+                    }                         
                 }
             }
             return Page();
