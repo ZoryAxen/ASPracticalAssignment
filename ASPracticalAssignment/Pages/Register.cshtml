@@ -1,5 +1,6 @@
 ﻿@page
 @model ASPracticalAssignment.Pages.RegisterModel
+@using AspNetCore.ReCaptcha
 @{
     ViewData["title"] = "Register";
 }
@@ -103,4 +104,5 @@
             </form>
         </div>
     </div>
+    @Html.ReCaptcha()
 </div>

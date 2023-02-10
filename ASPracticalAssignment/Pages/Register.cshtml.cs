@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using ASPracticalAssignment.ViewModels;
 using ASPracticalAssignment.Model;
 using Microsoft.AspNetCore.DataProtection;
+using AspNetCore.ReCaptcha;
 
 namespace ASPracticalAssignment.Pages
 {
@@ -26,7 +27,7 @@ namespace ASPracticalAssignment.Pages
         public void OnGet()
         {
         }
-
+        [ValidateReCaptcha]
         public async Task<IActionResult> OnPostAsync() 
         {
             if(ModelState.IsValid)
